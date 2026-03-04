@@ -92,3 +92,152 @@ def extract_beat_chroma(y_harmonic: np.ndarray, beat_frames: np.ndarray,
     chroma = librosa.feature.chroma_cqt(y=y_harmonic, sr=sr, hop_length=HOP, tuning=0.0)
     beat_frames_fixed = librosa.util.fix_frames(beat_frames, x_min=0, x_max=chroma.shape[-1])
     return librosa.util.sync(chroma, beat_frames_fixed, aggregate=np.median)
+
+
+# Chromatic note names for chord labeling.
+# Flat-side convention matching key_detection.py ROOTS.
+NOTES = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B']
+
+
+def build_chord_templates() -> tuple[list[str], np.ndarray]:
+    """
+    Build 36 chord templates: 12 major, 12 minor, 12 dominant 7th.
+
+    Each template is a 12-element binary vector over chroma bins, L2-normalized
+    so that cosine similarity (dot product) can be computed directly.
+
+    Template intervals per quality:
+        :maj  — root + major 3rd (4 semitones) + perfect 5th (7)
+        :min  — root + minor 3rd (3) + perfect 5th (7)
+        :7    — root + major 3rd (4) + perfect 5th (7) + minor 7th (10)
+
+    Returns:
+        chord_names: list[str] of length 36 — e.g. ['C:maj', 'C:min', 'C:7', 'Db:maj', ...]
+        template_matrix: np.ndarray of shape (36, 12) — each row is a
+                         normalized chord template vector.
+    """
+    chord_names = []
+    rows = []
+
+    for root in range(12):
+        for suffix, intervals in [(':maj', [0, 4, 7]),
+                                   (':min', [0, 3, 7]),
+                                   (':7', [0, 4, 7, 10])]:
+            t = np.zeros(12)
+            for i in intervals:
+                t[(root + i) % 12] = 1.0
+            t /= np.linalg.norm(t)
+            chord_names.append(f"{NOTES[root]}{suffix}")
+            rows.append(t)
+
+    return chord_names, np.array(rows)
+
+
+def detect_chords(chroma_sync: np.ndarray, chord_names: list[str],
+                  template_matrix: np.ndarray) -> list[str]:
+    """
+    Assign one chord label per beat using cosine similarity + Viterbi smoothing.
+
+    Process:
+        1. L2-normalize each beat's chroma column (cosine similarity prep).
+        2. Compute dot product of template_matrix @ chroma_norm to get
+           cosine similarity scores for all 36 chords at each beat.
+        3. Clip to non-negative (negative cosine = no match).
+        4. Normalize to produce a probability-like observation matrix.
+        5. Apply Viterbi with a self-transition loop matrix (p_loop=0.5) to
+           smooth the sequence while allowing reasonable chord changes.
+
+    Args:
+        chroma_sync: np.ndarray of shape (12, n_beats) — beat-synced chroma.
+        chord_names: list[str] of length 36 — from build_chord_templates().
+        template_matrix: np.ndarray of shape (36, 12) — normalized templates.
+
+    Returns:
+        list[str] of length n_beats — one chord label per beat, e.g. 'G:maj'.
+
+    NOTE: p_loop=0.5 allows transitions at every beat without over-smoothing.
+    Values above 0.7 collapse multi-minute songs to 1-2 unique chords.
+    """
+    chroma_norm = chroma_sync / (np.linalg.norm(chroma_sync, axis=0, keepdims=True) + 1e-8)
+    probs = template_matrix @ chroma_norm
+    probs = np.clip(probs, 0, None)
+    probs = probs / (probs.sum(axis=0, keepdims=True) + 1e-8)
+    transition = librosa.sequence.transition_loop(len(chord_names), 0.5)
+    states = librosa.sequence.viterbi(probs, transition)
+    return [chord_names[s] for s in states]
+
+
+def collapse_chords(chord_seq: list[str], beat_times: np.ndarray) -> list[dict]:
+    """
+    Merge consecutive identical chord labels into timestamped segments.
+
+    Each segment records the chord and the time (in seconds) at which it begins.
+    The end of each segment is implicitly the start of the next segment (or end
+    of the song for the last segment).
+
+    Args:
+        chord_seq: list[str] of length n_beats — one chord label per beat.
+        beat_times: np.ndarray of shape (n_beats,) — beat onset times in seconds.
+
+    Returns:
+        list[dict] where each dict has:
+            'chord': str  — chord label, e.g. 'G:maj'
+            'time':  float — onset time in seconds
+
+    Example:
+        ['G:maj', 'G:maj', 'D:maj', 'D:maj', 'Em:min'] -> [
+            {'chord': 'G:maj', 'time': 0.0},
+            {'chord': 'D:maj', 'time': 2.3},
+            {'chord': 'E:min', 'time': 4.6},
+        ]
+    """
+    result = []
+    for chord, time in zip(chord_seq, beat_times):
+        if not result or result[-1]['chord'] != chord:
+            result.append({'chord': chord, 'time': float(time)})
+    return result
+
+
+def detect_chords_pipeline(audio: dict) -> dict:
+    """
+    Full chord detection pipeline from load_audio() output to collapsed segments.
+
+    Orchestrates:
+        1. beat_track_grid()     — tempo estimation and beat frame placement
+        2. extract_beat_chroma() — beat-synced CQT chroma (12, n_beats)
+        3. build_chord_templates() — 36 L2-normalized chord templates
+        4. detect_chords()       — cosine similarity + Viterbi smoothing
+        5. collapse_chords()     — merge consecutive identical chord labels
+
+    Args:
+        audio: dict from load_audio() containing:
+            - y_percussive: np.ndarray — percussive component (for beat tracking)
+            - y_harmonic:   np.ndarray — harmonic component (for chroma extraction)
+            - sr:           int        — sample rate (expected 22050)
+
+    Returns:
+        dict with keys:
+            - tempo_bpm:      float      — estimated tempo in beats per minute
+            - beat_times:     list[float] — beat onset times in seconds
+            - chord_sequence: list[str]  — one chord label per beat
+            - chord_segments: list[dict] — collapsed segments with 'chord' and 'time'
+            - n_beats:        int        — total number of beats
+            - n_segments:     int        — number of chord segments after collapse
+    """
+    tempo_bpm, beat_frames = beat_track_grid(audio['y_percussive'], audio['sr'])
+    chroma_sync = extract_beat_chroma(audio['y_harmonic'], beat_frames, audio['sr'])
+    chord_names, template_matrix = build_chord_templates()
+    chord_seq = detect_chords(chroma_sync, chord_names, template_matrix)
+    beat_frames_fixed = librosa.util.fix_frames(beat_frames, x_min=0)
+    beat_times = librosa.frames_to_time(
+        beat_frames_fixed[:len(chord_seq)], sr=audio['sr'], hop_length=HOP
+    )
+    segments = collapse_chords(chord_seq, beat_times)
+    return {
+        'tempo_bpm': tempo_bpm,
+        'beat_times': beat_times.tolist(),
+        'chord_sequence': chord_seq,
+        'chord_segments': segments,
+        'n_beats': len(chord_seq),
+        'n_segments': len(segments),
+    }
