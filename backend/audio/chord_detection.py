@@ -198,6 +198,52 @@ def collapse_chords(chord_seq: list[str], beat_times: np.ndarray) -> list[dict]:
     return result
 
 
+def measure_accuracy(detected: list[str], reference: list[str]) -> dict:
+    """
+    Measure chord detection accuracy at beat level.
+
+    Compares detected chord labels against reference labels, both as exact
+    match and root-only match (ignoring quality — :maj/:min/:7).
+
+    Both lists must be the same length (aligned by beat index). If lengths
+    differ, comparison is truncated to the shorter list.
+
+    Args:
+        detected: List of detected chord strings (e.g. ["G:maj", "C:maj", ...])
+        reference: List of reference chord strings (same format)
+
+    Returns:
+        dict with:
+            - exact_accuracy: float — fraction of beats where chord matches exactly
+            - root_accuracy: float — fraction of beats where root note matches
+            - n_compared: int — number of beats compared
+            - exact_matches: int — count of exact matches
+            - root_matches: int — count of root-only matches
+    """
+    n = min(len(detected), len(reference))
+    if n == 0:
+        return {'exact_accuracy': 0.0, 'root_accuracy': 0.0,
+                'n_compared': 0, 'exact_matches': 0, 'root_matches': 0}
+
+    exact_matches = 0
+    root_matches = 0
+    for d, r in zip(detected[:n], reference[:n]):
+        if d == r:
+            exact_matches += 1
+        d_root = d.split(':')[0]
+        r_root = r.split(':')[0]
+        if d_root == r_root:
+            root_matches += 1
+
+    return {
+        'exact_accuracy': exact_matches / n,
+        'root_accuracy': root_matches / n,
+        'n_compared': n,
+        'exact_matches': exact_matches,
+        'root_matches': root_matches,
+    }
+
+
 def detect_chords_pipeline(audio: dict) -> dict:
     """
     Full chord detection pipeline from load_audio() output to collapsed segments.
