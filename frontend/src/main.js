@@ -1,5 +1,5 @@
 import './style.css'
-import { ChordProParser, HtmlDivFormatter } from 'chordsheetjs'
+import { renderChart } from './renderChart.js'
 
 document.querySelector('#app').innerHTML = `
   <h1>dontCave</h1>
@@ -11,20 +11,19 @@ document.querySelector('#app').innerHTML = `
     <button type="submit" id="submit-btn">Analyze</button>
   </form>
   <p id="status"></p>
-  <pre id="result"></pre>
   <div id="chord-chart"></div>
 `
 
 const form = document.querySelector('#upload-form')
 const fileInput = document.querySelector('#file-input')
 const statusEl = document.querySelector('#status')
-const resultEl = document.querySelector('#result')
+const chartEl = document.querySelector('#chord-chart')
 const submitBtn = document.querySelector('#submit-btn')
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault()
 
-  resultEl.textContent = ''
+  chartEl.innerHTML = ''
 
   if (!fileInput.files.length) {
     statusEl.textContent = 'Please select an MP3 file.'
@@ -52,38 +51,10 @@ form.addEventListener('submit', async (e) => {
 
     const data = await response.json()
     statusEl.textContent = 'Analysis complete.'
-    resultEl.textContent = JSON.stringify(data, null, 2)
+    renderChart(data, chartEl)
   } catch (err) {
     statusEl.textContent = `Network error: ${err.message}`
   } finally {
     submitBtn.disabled = false
   }
 })
-
-// --- Temporary ChordPro smoke test (remove in 07-02) ---
-const TEST_CHORDPRO = `{title: Smoke Test}
-{key: G}
-{start_of_verse: Verse 1}
-[G]Let it [D]be, let it [Em]be
-[C]Whis-per [G]words of wis-dom
-{end_of_verse}
-{start_of_chorus: Chorus}
-[Am]Let it [F]be
-{end_of_chorus}`
-
-const parser = new ChordProParser()
-const song = parser.parse(TEST_CHORDPRO)
-const formatter = new HtmlDivFormatter()
-
-const chartEl = document.querySelector('#chord-chart')
-
-// Inject scoped CSS
-if (!document.getElementById('chordsheet-css')) {
-  const styleEl = document.createElement('style')
-  styleEl.id = 'chordsheet-css'
-  styleEl.textContent = formatter.cssString('#chord-chart')
-  document.head.appendChild(styleEl)
-}
-
-chartEl.innerHTML = formatter.format(song)
-// --- End smoke test ---
