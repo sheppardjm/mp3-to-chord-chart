@@ -11,12 +11,14 @@ document.querySelector('#app').innerHTML = `
     <button type="submit" id="submit-btn">Analyze</button>
   </form>
   <p id="status"></p>
+  <div id="chart-header"></div>
   <div id="chord-chart"></div>
 `
 
 const form = document.querySelector('#upload-form')
 const fileInput = document.querySelector('#file-input')
 const statusEl = document.querySelector('#status')
+const headerEl = document.querySelector('#chart-header')
 const chartEl = document.querySelector('#chord-chart')
 const submitBtn = document.querySelector('#submit-btn')
 
@@ -24,6 +26,7 @@ form.addEventListener('submit', async (e) => {
   e.preventDefault()
 
   chartEl.innerHTML = ''
+  headerEl.innerHTML = ''
 
   if (!fileInput.files.length) {
     statusEl.textContent = 'Please select an MP3 file.'
@@ -51,6 +54,10 @@ form.addEventListener('submit', async (e) => {
 
     const data = await response.json()
     statusEl.textContent = 'Analysis complete.'
+    headerEl.innerHTML = `
+      <span class="chart-key">Key: ${data.key}</span>
+      <span class="chart-tempo">Tempo: ${Math.round(data.bpm)} BPM</span>
+    `
     renderChart(data, chartEl)
   } catch (err) {
     statusEl.textContent = `Network error: ${err.message}`
