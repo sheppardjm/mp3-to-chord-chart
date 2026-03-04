@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-03-03)
 
 **Core value:** Accurately detect chord changes from an MP3 and align them to the right positions in user-provided lyrics, producing a readable chord chart.
-**Current focus:** Phase 3 in progress — beat tracking complete, chord template matching next
+**Current focus:** Phase 3 in progress — chord detection complete, accuracy validation next
 
 ## Current Position
 
 Phase: 3 of 8 (Beat Tracking and Chord Detection) — In progress
-Plan: 1 of 3 in current phase
-Status: In progress — 03-01 complete, ready for 03-02
-Last activity: 2026-03-04 — Completed 03-01-PLAN.md (beat tracking, beat-synced chroma, 107.7 BPM / 435 beats baseline)
+Plan: 2 of 3 in current phase
+Status: In progress — 03-02 complete, ready for 03-03
+Last activity: 2026-03-04 — Completed 03-02-PLAN.md (chord templates, Viterbi smoothing, full pipeline — 14 segments, 4 unique chords on Don't Cave.mp3)
 
-Progress: [████░░░░░░] 31% (5/16 estimated plans)
+Progress: [████░░░░░░] 38% (6/16 estimated plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 4
-- Average duration: ~6.1 minutes
-- Total execution time: 0.41 hours
+- Total plans completed: 5
+- Average duration: ~5.2 minutes
+- Total execution time: 0.44 hours
 
 **By Phase:**
 
@@ -29,10 +29,11 @@ Progress: [████░░░░░░] 31% (5/16 estimated plans)
 |-------|-------|-------|----------|
 | 01-project-scaffold | 2 | ~3.5 min | ~1.75 min |
 | 02-audio-loading-and-key-detection | 2 | ~21 min | ~10.5 min |
+| 03-beat-tracking-and-chord-detection | 2 | ~4 min | ~2 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (1.5 min), 01-02 (2 min), 02-01 (13 min), 02-02 (~8 min), 03-01 (~2 min)
-- Trend: Audio plans slower due to library compat and empirical verification; 03-01 fast (clean implementation, no new compat issues)
+- Last 5 plans: 01-02 (2 min), 02-01 (13 min), 02-02 (~8 min), 03-01 (~2 min), 03-02 (~2 min)
+- Trend: Phase 3 executing quickly — numba compat issues all resolved in Phase 2; librosa.sequence functions unaffected by stub
 
 *Updated after each plan completion*
 
@@ -54,6 +55,8 @@ Recent decisions affecting current work:
 - 02-02 BASELINE: "Don't Cave.mp3" detected as G:maj — Phase 3 chord templates must use F# naming (not Gb)
 - 03-01 D001: beat_track_grid() uses regular grid (not beat_track()) — librosa.beat.beat_track() broken with numba no-op stub (@guvectorize incompatible with stub passthrough)
 - 03-01 BASELINE: "Don't Cave.mp3" = 107.7 BPM, 435 beats, (12, 436) chroma — baseline for 03-02 chord detection validation
+- 03-02 D001: p_loop=0.5 for Viterbi transition matrix — values above 0.7 collapse songs to 1-2 segments; 0.5 produces 14 musically coherent segments
+- 03-02 BASELINE: "Don't Cave.mp3" = 4 unique chords (G:maj, A:min, C:maj, D:maj), 14 segments, 436 beats — correct for G major folk/pop song (I, ii, IV, V chords)
 
 ### Pending Todos
 
@@ -61,13 +64,13 @@ None yet.
 
 ### Blockers/Concerns
 
-- Phase 3: 7th chord template detection accuracy has no published baseline — validate empirically before committing to chord vocabulary
+- Phase 3 (03-03): 7th chord template detection accuracy has no published baseline — Don't Cave.mp3 uses only triads (no :7 detected); validate with additional songs in 03-03
 - Phase 4: Laplacian segmentation k-parameter needs tuning per song type — allow section label editing in UI from the start
 - Phase 8: svguitar chord coverage for edge-case chord names (Ebm, F#7) must be tested early; confirm fallback behavior
 - 02-02 NOTE: numba stub @stencil path triggered in chroma_cqt -> estimate_tuning -> piptrack chain. Fixed with tuning=0.0. Watch for other librosa functions that call estimate_tuning or piptrack without explicit tuning parameter.
 
 ## Session Continuity
 
-Last session: 2026-03-04T05:07:24Z
-Stopped at: Completed 03-01-PLAN.md — beat_track_grid() and extract_beat_chroma() verified on Don't Cave.mp3 (107.7 BPM, 435 beats, (12, 436) chroma)
+Last session: 2026-03-04T05:12:10Z
+Stopped at: Completed 03-02-PLAN.md — detect_chords_pipeline() verified on Don't Cave.mp3 (107.7 BPM, 436 beats, 14 segments, G:maj/A:min/C:maj/D:maj)
 Resume file: None
