@@ -32,11 +32,11 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. `vite dev` starts the frontend dev server and serves the HTML page in a browser
   3. A GET request to the backend health endpoint returns a 200 response
   4. The frontend successfully fetches and displays a response from the backend (CORS configured)
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 01-01: Initialize FastAPI project structure with pyproject.toml, dependencies, and health endpoint
-- [ ] 01-02: Initialize Vite vanilla JS frontend and configure CORS proxy to backend
+- [ ] 01-01-PLAN.md -- Set up FastAPI backend with pyproject.toml, venv, dependencies, and health endpoint
+- [ ] 01-02-PLAN.md -- Scaffold Vite vanilla JS frontend, configure proxy to backend, verify full-stack communication
 
 ---
 
