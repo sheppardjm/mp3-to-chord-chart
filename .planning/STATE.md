@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-03-03)
 
 **Core value:** Accurately detect chord changes from an MP3 and align them to the right positions in user-provided lyrics, producing a readable chord chart.
-**Current focus:** Phase 3 complete — measure_accuracy() utility and CI test suite done; accuracy validated on Wild Horses.mp3; ready for Phase 4 (Structural Segmentation)
+**Current focus:** Phase 4 in progress — segmentation module (04-01) complete; agglomerative clustering on beat-synced chroma; ready for 04-02 pipeline integration
 
 ## Current Position
 
-Phase: 3 of 8 (Beat Tracking and Chord Detection) — Complete
-Plan: 3 of 3 in current phase (phase complete — ready for Phase 4)
-Status: Phase 3 complete — all 3 plans done; ready for 04-structural-segmentation
-Last activity: 2026-03-04 — Completed 03-03-PLAN.md (measure_accuracy(), 18-test CI suite, Wild Horses.mp3 accuracy validation — root detection strong, :7 quality confusion documented)
+Phase: 4 of 8 (Structural Segmentation) — In progress
+Plan: 1 of 2 in current phase (04-01 complete — ready for 04-02)
+Status: In progress — 04-01 complete; segmentation module and test suite done
+Last activity: 2026-03-04 — Completed 04-01-PLAN.md (segmentation.py: compute_k, segment_song, build_sections, DEFAULT_LABELS; 23-test CI suite)
 
-Progress: [███░░░░░░░] 35% (7/20 plans)
+Progress: [████░░░░░░] 40% (8/20 plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 5
-- Average duration: ~5.2 minutes
-- Total execution time: 0.44 hours
+- Total plans completed: 6
+- Average duration: ~4.8 minutes
+- Total execution time: 0.46 hours
 
 **By Phase:**
 
@@ -30,10 +30,11 @@ Progress: [███░░░░░░░] 35% (7/20 plans)
 | 01-project-scaffold | 2 | ~3.5 min | ~1.75 min |
 | 02-audio-loading-and-key-detection | 2 | ~21 min | ~10.5 min |
 | 03-beat-tracking-and-chord-detection | 3 | ~19 min | ~6.3 min |
+| 04-structural-segmentation | 1 (of 2) | ~2 min | ~2 min |
 
 **Recent Trend:**
-- Last 5 plans: 02-02 (~8 min), 03-01 (~2 min), 03-02 (~2 min), 03-03 (~15 min w/ checkpoint)
-- Trend: Phase 3 complete; checkpoint plans are slower due to human wait time
+- Last 5 plans: 03-01 (~2 min), 03-02 (~2 min), 03-03 (~15 min w/ checkpoint), 04-01 (~2 min)
+- Trend: Simple implementation plans run fast (~2 min); checkpoint plans slower due to human wait time
 
 *Updated after each plan completion*
 
@@ -59,6 +60,8 @@ Recent decisions affecting current work:
 - 03-02 BASELINE: "Don't Cave.mp3" = 4 unique chords (G:maj, A:min, C:maj, D:maj), 14 segments, 436 beats — correct for G major folk/pop song (I, ii, IV, V chords)
 - 03-03 D001: :7 quality confusion is a known limitation — template matching cannot distinguish Am7 from A:min, and Bm is confused as B:7 due to template overlap; root detection is accurate; quality requires more sophisticated approach; no vocabulary change for Phase 3
 - 03-03 BASELINE: "Wild Horses.mp3" = 8 unique chords detected (G:maj, A:min, B:7, C:maj, D:maj + false G:7, D:7, A:7); all 5 expected roots present (G, A, B, C, D); approved by user as reasonable for template matching
+- 04-01 D001: Generic Section A/B/C labels chosen over Verse/Chorus -- no reliable auto-detection from chroma alone (research confirms)
+- 04-01 D002: compute_k() floor=4 and n_beats-1 guard -- ensures meaningful segmentation for short songs, prevents sklearn ValueError
 
 ### Pending Todos
 
@@ -73,6 +76,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-04
-Stopped at: Completed 03-03-PLAN.md — measure_accuracy() added, 18-test CI suite created, Wild Horses.mp3 validation approved; Phase 3 complete
+Last session: 2026-03-04T05:57:49Z
+Stopped at: Completed 04-01-PLAN.md — segmentation.py (compute_k, segment_song, build_sections, DEFAULT_LABELS) and 23-test CI suite; ready for 04-02
 Resume file: None
