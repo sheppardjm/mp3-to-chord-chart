@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-03-03)
 
 **Core value:** Accurately detect chord changes from an MP3 and align them to the right positions in user-provided lyrics, producing a readable chord chart.
-**Current focus:** Phase 4 complete — /analyze POST endpoint integrating full audio pipeline (load -> chords -> segment); 8 labeled sections validated on "Don't Cave.mp3"; ready for Phase 5 (API layer)
+**Current focus:** Phase 5 in progress — upload validation (413/415) and threadpool async processing added to /analyze; event loop no longer blocked during 10-60s pipeline
 
 ## Current Position
 
-Phase: 4 of 8 (Structural Segmentation) — Complete
-Plan: 2 of 2 in current phase (04-01 and 04-02 complete)
-Status: Phase 4 complete — /analyze endpoint wires segmentation into API; all Phase 4 success criteria passed
-Last activity: 2026-03-04 — Completed 04-02-PLAN.md (/analyze POST endpoint: load_audio + detect_chords_pipeline + segment_song + build_sections; curl-validated 8 sections on Don't Cave.mp3)
+Phase: 5 of 8 (Upload Handler and Async Processing) — In progress
+Plan: 1 of 1 in current phase (05-01 complete)
+Status: Phase 5 plan 1 complete — /analyze has HTTP 413/415 guards and run_in_threadpool offloading; baseline preserved (107.7 BPM, 8 sections, 436 beats)
+Last activity: 2026-03-04 — Completed 05-01-PLAN.md (file validation + starlette threadpool; /health responds in 0.008s during active /analyze)
 
-Progress: [█████░░░░░] 50% (10/20 plans)
+Progress: [█████░░░░░] 55% (11/20 plans)
 
 ## Performance Metrics
 
@@ -31,10 +31,11 @@ Progress: [█████░░░░░] 50% (10/20 plans)
 | 02-audio-loading-and-key-detection | 2 | ~21 min | ~10.5 min |
 | 03-beat-tracking-and-chord-detection | 3 | ~19 min | ~6.3 min |
 | 04-structural-segmentation | 2 | ~12 min | ~6 min |
+| 05-upload-handler-and-async-processing | 1 | ~2 min | ~2 min |
 
 **Recent Trend:**
-- Last 5 plans: 03-02 (~2 min), 03-03 (~15 min w/ checkpoint), 04-01 (~2 min), 04-02 (~10 min w/ checkpoint)
-- Trend: Simple implementation plans run fast (~2 min); checkpoint plans slower due to human wait time; Phase 4 complete
+- Last 5 plans: 03-03 (~15 min w/ checkpoint), 04-01 (~2 min), 04-02 (~10 min w/ checkpoint), 05-01 (~2 min)
+- Trend: Simple implementation plans run fast (~2 min); Phase 5 plan 1 was straightforward refactor with no blockers
 
 *Updated after each plan completion*
 
@@ -64,6 +65,8 @@ Recent decisions affecting current work:
 - 04-01 D002: compute_k() floor=4 and n_beats-1 guard -- ensures meaningful segmentation for short songs, prevents sklearn ValueError
 - 04-02 D001: Re-compute chroma_sync in /analyze rather than modifying detect_chords_pipeline() -- preserves Phase 3 contract; ~0.5s re-computation cost acceptable for 4-min songs
 - 04-02 D002: File size/MIME validation and async processing deferred to Phase 5 -- out of scope for pipeline integration
+- 05-01 D001: ALLOWED_MIME_TYPES = {"audio/mpeg", "audio/mp3"} — browsers send audio/mpeg; curl requires explicit type=audio/mpeg flag; application/octet-stream (curl default) correctly rejected
+- 05-01 D002: file.size guard uses "is not None" check — UploadFile.size is None when Content-Length header absent; guard is advisory when size known, skips gracefully otherwise
 
 ### Pending Todos
 
@@ -78,6 +81,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-04T06:10:00Z
-Stopped at: Completed 04-02-PLAN.md — /analyze POST endpoint integrating full audio pipeline; curl-validated 8 sections on Don't Cave.mp3; Phase 4 complete
+Last session: 2026-03-04T06:52:10Z
+Stopped at: Completed 05-01-PLAN.md — file validation guards (413/415) + run_in_threadpool offloading; /health responds in 0.008s during active /analyze; baseline preserved
 Resume file: None
