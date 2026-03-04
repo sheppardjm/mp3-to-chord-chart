@@ -103,11 +103,11 @@ Plans:
   3. Non-MP3 MIME types are rejected at upload with a clear error message
   4. The UI shows a progress message (e.g., "Analyzing audio...") while the backend is processing — the page does not freeze or appear broken
   5. The pipeline runs in a FastAPI threadpool (run_in_executor) — confirmed by server remaining responsive to a second request during processing
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 05-01: Implement upload endpoint with MIME type and file size validation; write to temp file with UUID name
-- [ ] 05-02: Wire pipeline invocation to run_in_executor; implement frontend progress indicator via polling or loading state
+- [ ] 05-01-PLAN.md -- Add file validation (size + MIME) and threadpool offloading to /analyze endpoint
+- [ ] 05-02-PLAN.md -- Replace frontend scaffold with upload form, loading state, and result display
 
 ---
 
