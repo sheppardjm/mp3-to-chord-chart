@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-03-03)
 
 **Core value:** Accurately detect chord changes from an MP3 and align them to the right positions in user-provided lyrics, producing a readable chord chart.
-**Current focus:** Phase 5 in progress — upload validation (413/415) and threadpool async processing added to /analyze; event loop no longer blocked during 10-60s pipeline
+**Current focus:** Phase 5 complete — upload validation (413/415), threadpool async processing, and frontend upload form with loading state all wired end-to-end; ready for Phase 6
 
 ## Current Position
 
-Phase: 5 of 8 (Upload Handler and Async Processing) — In progress
-Plan: 1 of 1 in current phase (05-01 complete)
-Status: Phase 5 plan 1 complete — /analyze has HTTP 413/415 guards and run_in_threadpool offloading; baseline preserved (107.7 BPM, 8 sections, 436 beats)
-Last activity: 2026-03-04 — Completed 05-01-PLAN.md (file validation + starlette threadpool; /health responds in 0.008s during active /analyze)
+Phase: 5 of 8 (Upload Handler and Async Processing) — Complete
+Plan: 2 of 2 in current phase (05-02 complete)
+Status: Phase 5 complete — upload-analyze-display cycle verified end-to-end; backend validates/processes async, frontend posts FormData and shows loading state + result
+Last activity: 2026-03-04 — Completed 05-02-PLAN.md (MP3 upload form with loading state, error display, FormData POST to /api/analyze)
 
-Progress: [█████░░░░░] 55% (11/20 plans)
+Progress: [██████░░░░] 60% (12/20 plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 8 (through 04-02, 2 plans counted for phase 4)
-- Average duration: ~5.8 minutes
-- Total execution time: ~0.78 hours
+- Total plans completed: 12 (through 05-02)
+- Average duration: ~5.3 minutes
+- Total execution time: ~1.1 hours
 
 **By Phase:**
 
@@ -31,11 +31,11 @@ Progress: [█████░░░░░] 55% (11/20 plans)
 | 02-audio-loading-and-key-detection | 2 | ~21 min | ~10.5 min |
 | 03-beat-tracking-and-chord-detection | 3 | ~19 min | ~6.3 min |
 | 04-structural-segmentation | 2 | ~12 min | ~6 min |
-| 05-upload-handler-and-async-processing | 1 | ~2 min | ~2 min |
+| 05-upload-handler-and-async-processing | 2 | ~5 min | ~2.5 min |
 
 **Recent Trend:**
-- Last 5 plans: 03-03 (~15 min w/ checkpoint), 04-01 (~2 min), 04-02 (~10 min w/ checkpoint), 05-01 (~2 min)
-- Trend: Simple implementation plans run fast (~2 min); Phase 5 plan 1 was straightforward refactor with no blockers
+- Last 5 plans: 04-01 (~2 min), 04-02 (~10 min w/ checkpoint), 05-01 (~2 min), 05-02 (~3 min w/ checkpoint)
+- Trend: Simple implementation plans run fast (~2-3 min); Phase 5 both plans fast with no blockers
 
 *Updated after each plan completion*
 
@@ -81,6 +81,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-04T06:52:10Z
-Stopped at: Completed 05-01-PLAN.md — file validation guards (413/415) + run_in_threadpool offloading; /health responds in 0.008s during active /analyze; baseline preserved
+Last session: 2026-03-04T06:55:00Z
+Stopped at: Completed 05-02-PLAN.md — MP3 upload form with FormData POST, loading state, error display; full upload-analyze-display cycle user-verified end-to-end
 Resume file: None
