@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-03-03)
 
 **Core value:** Accurately detect chord changes from an MP3 and align them to the right positions in user-provided lyrics, producing a readable chord chart.
-**Current focus:** Phase 2 complete — ready for Phase 3 chord detection
+**Current focus:** Phase 3 in progress — beat tracking complete, chord template matching next
 
 ## Current Position
 
-Phase: 2 of 8 (Audio Loading and Key Detection) — Complete
-Plan: 2 of 2 in current phase
-Status: Phase complete — ready for Phase 3
-Last activity: 2026-03-04 — Completed 02-02-PLAN.md (key detection, enharmonic naming, G:maj baseline)
+Phase: 3 of 8 (Beat Tracking and Chord Detection) — In progress
+Plan: 1 of 3 in current phase
+Status: In progress — 03-01 complete, ready for 03-02
+Last activity: 2026-03-04 — Completed 03-01-PLAN.md (beat tracking, beat-synced chroma, 107.7 BPM / 435 beats baseline)
 
-Progress: [███░░░░░░░] 25% (4/16 estimated plans)
+Progress: [████░░░░░░] 31% (5/16 estimated plans)
 
 ## Performance Metrics
 
@@ -31,8 +31,8 @@ Progress: [███░░░░░░░] 25% (4/16 estimated plans)
 | 02-audio-loading-and-key-detection | 2 | ~21 min | ~10.5 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (1.5 min), 01-02 (2 min), 02-01 (13 min), 02-02 (~8 min)
-- Trend: Audio plans slower due to library compat and empirical verification; 02-02 faster than 02-01
+- Last 5 plans: 01-01 (1.5 min), 01-02 (2 min), 02-01 (13 min), 02-02 (~8 min), 03-01 (~2 min)
+- Trend: Audio plans slower due to library compat and empirical verification; 03-01 fast (clean implementation, no new compat issues)
 
 *Updated after each plan completion*
 
@@ -52,6 +52,8 @@ Recent decisions affecting current work:
 - 02-02 D001: tuning=0.0 passed to chroma_cqt — bypasses estimate_tuning/piptrack/numba stencil which fails with no-op stub; standard A=440 Hz is correct for commercial recordings
 - 02-02 D002: ROOTS flat-side convention (Db/Eb/Ab/Bb, F# for tritone) — standard music theory, compatible with librosa.key_to_notes()
 - 02-02 BASELINE: "Don't Cave.mp3" detected as G:maj — Phase 3 chord templates must use F# naming (not Gb)
+- 03-01 D001: beat_track_grid() uses regular grid (not beat_track()) — librosa.beat.beat_track() broken with numba no-op stub (@guvectorize incompatible with stub passthrough)
+- 03-01 BASELINE: "Don't Cave.mp3" = 107.7 BPM, 435 beats, (12, 436) chroma — baseline for 03-02 chord detection validation
 
 ### Pending Todos
 
@@ -66,6 +68,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-04
-Stopped at: Completed 02-02-PLAN.md — key detection (G:maj) verified on Don't Cave.mp3, enharmonic naming confirmed
+Last session: 2026-03-04T05:07:24Z
+Stopped at: Completed 03-01-PLAN.md — beat_track_grid() and extract_beat_chroma() verified on Don't Cave.mp3 (107.7 BPM, 435 beats, (12, 436) chroma)
 Resume file: None
