@@ -29,8 +29,12 @@ def detect_key(y_harmonic: np.ndarray, sr: int = 22050) -> str:
         Key string in "ROOT:mode" format, e.g. "G:maj" or "Bb:min".
         This format is compatible with librosa.key_to_notes().
     """
-    # Extract chromagram from harmonic signal (CQT for pitch-aligned bins)
-    chroma = librosa.feature.chroma_cqt(y=y_harmonic, sr=sr)
+    # Extract chromagram from harmonic signal (CQT for pitch-aligned bins).
+    # tuning=0.0 bypasses estimate_tuning() which calls piptrack/_parabolic_interpolation
+    # via numba @stencil — the numba stub (installed for Python 3.14 x86_64 compat)
+    # does not JIT-compile stencils, causing a ValueError on array comparison.
+    # Standard A=440 Hz tuning (tuning=0.0) is correct for recorded music.
+    chroma = librosa.feature.chroma_cqt(y=y_harmonic, sr=sr, tuning=0.0)
 
     # Sum across time -> 12-element pitch-class energy vector
     chroma_mean = chroma.mean(axis=1)
