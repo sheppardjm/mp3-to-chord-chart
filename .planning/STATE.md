@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-03-03)
 
 **Core value:** Accurately detect chord changes from an MP3 and align them to the right positions in user-provided lyrics, producing a readable chord chart.
-**Current focus:** Phase 4 in progress — segmentation module (04-01) complete; agglomerative clustering on beat-synced chroma; ready for 04-02 pipeline integration
+**Current focus:** Phase 4 complete — /analyze POST endpoint integrating full audio pipeline (load -> chords -> segment); 8 labeled sections validated on "Don't Cave.mp3"; ready for Phase 5 (API layer)
 
 ## Current Position
 
-Phase: 4 of 8 (Structural Segmentation) — In progress
-Plan: 1 of 2 in current phase (04-01 complete — ready for 04-02)
-Status: In progress — 04-01 complete; segmentation module and test suite done
-Last activity: 2026-03-04 — Completed 04-01-PLAN.md (segmentation.py: compute_k, segment_song, build_sections, DEFAULT_LABELS; 23-test CI suite)
+Phase: 4 of 8 (Structural Segmentation) — Complete
+Plan: 2 of 2 in current phase (04-01 and 04-02 complete)
+Status: Phase 4 complete — /analyze endpoint wires segmentation into API; all Phase 4 success criteria passed
+Last activity: 2026-03-04 — Completed 04-02-PLAN.md (/analyze POST endpoint: load_audio + detect_chords_pipeline + segment_song + build_sections; curl-validated 8 sections on Don't Cave.mp3)
 
-Progress: [████░░░░░░] 40% (8/20 plans)
+Progress: [█████░░░░░] 50% (10/20 plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 6
-- Average duration: ~4.8 minutes
-- Total execution time: 0.46 hours
+- Total plans completed: 8 (through 04-02, 2 plans counted for phase 4)
+- Average duration: ~5.8 minutes
+- Total execution time: ~0.78 hours
 
 **By Phase:**
 
@@ -30,11 +30,11 @@ Progress: [████░░░░░░] 40% (8/20 plans)
 | 01-project-scaffold | 2 | ~3.5 min | ~1.75 min |
 | 02-audio-loading-and-key-detection | 2 | ~21 min | ~10.5 min |
 | 03-beat-tracking-and-chord-detection | 3 | ~19 min | ~6.3 min |
-| 04-structural-segmentation | 1 (of 2) | ~2 min | ~2 min |
+| 04-structural-segmentation | 2 | ~12 min | ~6 min |
 
 **Recent Trend:**
-- Last 5 plans: 03-01 (~2 min), 03-02 (~2 min), 03-03 (~15 min w/ checkpoint), 04-01 (~2 min)
-- Trend: Simple implementation plans run fast (~2 min); checkpoint plans slower due to human wait time
+- Last 5 plans: 03-02 (~2 min), 03-03 (~15 min w/ checkpoint), 04-01 (~2 min), 04-02 (~10 min w/ checkpoint)
+- Trend: Simple implementation plans run fast (~2 min); checkpoint plans slower due to human wait time; Phase 4 complete
 
 *Updated after each plan completion*
 
@@ -62,6 +62,8 @@ Recent decisions affecting current work:
 - 03-03 BASELINE: "Wild Horses.mp3" = 8 unique chords detected (G:maj, A:min, B:7, C:maj, D:maj + false G:7, D:7, A:7); all 5 expected roots present (G, A, B, C, D); approved by user as reasonable for template matching
 - 04-01 D001: Generic Section A/B/C labels chosen over Verse/Chorus -- no reliable auto-detection from chroma alone (research confirms)
 - 04-01 D002: compute_k() floor=4 and n_beats-1 guard -- ensures meaningful segmentation for short songs, prevents sklearn ValueError
+- 04-02 D001: Re-compute chroma_sync in /analyze rather than modifying detect_chords_pipeline() -- preserves Phase 3 contract; ~0.5s re-computation cost acceptable for 4-min songs
+- 04-02 D002: File size/MIME validation and async processing deferred to Phase 5 -- out of scope for pipeline integration
 
 ### Pending Todos
 
@@ -76,6 +78,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-04T05:57:49Z
-Stopped at: Completed 04-01-PLAN.md — segmentation.py (compute_k, segment_song, build_sections, DEFAULT_LABELS) and 23-test CI suite; ready for 04-02
+Last session: 2026-03-04T06:10:00Z
+Stopped at: Completed 04-02-PLAN.md — /analyze POST endpoint integrating full audio pipeline; curl-validated 8 sections on Don't Cave.mp3; Phase 4 complete
 Resume file: None
