@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Project Scaffold** - FastAPI backend skeleton and Vite frontend skeleton, wired together and confirmed running
 - [x] **Phase 2: Audio Loading and Key Detection** - MP3 loads correctly with memory constraints; detected key drives enharmonic naming
 - [x] **Phase 3: Beat Tracking and Chord Detection** - Beat-synchronized, template-matched chord labels produced from audio
-- [ ] **Phase 4: Structural Segmentation** - Song sections (Verse, Chorus, Bridge) auto-detected from audio and labeled
+- [x] **Phase 4: Structural Segmentation** - Song sections (Verse, Chorus, Bridge) auto-detected from audio and labeled
 - [ ] **Phase 5: Upload Handler and Async Processing** - MP3 file upload with validation; pipeline runs off the request thread with progress feedback
 - [ ] **Phase 6: Lyrics Input, Chart Builder, and API Contract** - User pastes lyrics; backend aligns chord timeline to lyric lines and returns ChartData JSON
 - [ ] **Phase 7: Chord Chart Display** - Frontend renders chords above lyrics in Ultimate Guitar format, organized by section
@@ -85,11 +85,11 @@ Plans:
   2. Section boundaries fall on beat positions, not at arbitrary audio frames
   3. Default section labels (Verse, Chorus, Bridge or Section A, Section B) are assigned to each segment
   4. The `/analyze` endpoint returns a JSON response that includes a `sections` array with label, start time, and chord sequence per section
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 04-01: Implement structural segmentation using librosa.segment Laplacian method and snap boundaries to beats
-- [ ] 04-02: Assign default section labels and integrate segmentation output into pipeline JSON response; validate with curl
+- [x] 04-01-PLAN.md -- Create segmentation module (compute_k, segment_song, build_sections) with agglomerative clustering and 23 structural tests
+- [x] 04-02-PLAN.md -- Add /analyze POST endpoint integrating chord detection + segmentation; validate with curl against Don't Cave.mp3
 
 ---
 
@@ -176,7 +176,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | 1. Project Scaffold | 2/2 | Complete | 2026-03-03 |
 | 2. Audio Loading and Key Detection | 2/2 | Complete | 2026-03-04 |
 | 3. Beat Tracking and Chord Detection | 3/3 | Complete | 2026-03-04 |
-| 4. Structural Segmentation | 0/2 | Not started | - |
+| 4. Structural Segmentation | 2/2 | Complete | 2026-03-04 |
 | 5. Upload Handler and Async Processing | 0/2 | Not started | - |
 | 6. Lyrics Input, Chart Builder, and API Contract | 0/3 | Not started | - |
 | 7. Chord Chart Display | 0/3 | Not started | - |

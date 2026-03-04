@@ -9,7 +9,7 @@
 
 - [x] **AUDIO-01**: System detects major, minor, and 7th chords from an uploaded MP3 using chroma feature extraction
 - [x] **AUDIO-02**: Chord changes are snapped to musical beat positions (beat-synchronized)
-- [ ] **AUDIO-03**: Song sections (Verse, Chorus, Bridge) are auto-detected via structural segmentation
+- [x] **AUDIO-03**: Song sections (Verse, Chorus, Bridge) are auto-detected via structural segmentation
 - [x] **AUDIO-04**: Song key is detected for correct enharmonic chord naming (F# vs Gb)
 
 ### Input
@@ -66,7 +66,7 @@
 |-------------|-------|--------|
 | AUDIO-01 | Phase 3 | Complete |
 | AUDIO-02 | Phase 3 | Complete |
-| AUDIO-03 | Phase 4 | Pending |
+| AUDIO-03 | Phase 4 | Complete |
 | AUDIO-04 | Phase 2 | Complete |
 | INPUT-01 | Phase 5 | Pending |
 | INPUT-02 | Phase 6 | Pending |
