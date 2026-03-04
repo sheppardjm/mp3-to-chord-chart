@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Project Scaffold** - FastAPI backend skeleton and Vite frontend skeleton, wired together and confirmed running
 - [x] **Phase 2: Audio Loading and Key Detection** - MP3 loads correctly with memory constraints; detected key drives enharmonic naming
-- [ ] **Phase 3: Beat Tracking and Chord Detection** - Beat-synchronized, template-matched chord labels produced from audio
+- [x] **Phase 3: Beat Tracking and Chord Detection** - Beat-synchronized, template-matched chord labels produced from audio
 - [ ] **Phase 4: Structural Segmentation** - Song sections (Verse, Chorus, Bridge) auto-detected from audio and labeled
 - [ ] **Phase 5: Upload Handler and Async Processing** - MP3 file upload with validation; pipeline runs off the request thread with progress feedback
 - [ ] **Phase 6: Lyrics Input, Chart Builder, and API Contract** - User pastes lyrics; backend aligns chord timeline to lyric lines and returns ChartData JSON
@@ -67,12 +67,12 @@ Plans:
   3. Adjacent identical chords are collapsed — a 4-bar C chord appears as one C entry, not 16 identical beats
   4. Chord detection produces only major, minor, and 7th chord labels (no other types slip through)
   5. Chord detection accuracy on 5 known test songs is at or above 60% compared to manually verified chord sheets
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 03-01: Implement beat tracking with librosa.beat.beat_track() and chroma sync via librosa.util.sync()
-- [ ] 03-02: Implement chord template matching (cosine similarity) against major/minor/7th templates with HPSS pre-processing
-- [ ] 03-03: Implement Viterbi smoothing and chord collapse; validate accuracy against 5 known songs
+- [x] 03-01-PLAN.md -- Beat tracking via grid placement (numba workaround) and beat-synced chroma extraction
+- [x] 03-02-PLAN.md -- Chord template matching (cosine similarity + Viterbi smoothing) with pipeline function
+- [x] 03-03-PLAN.md -- Accuracy measurement utility, 18 structural tests, human-verified accuracy on Wild Horses.mp3
 
 ---
 
@@ -175,7 +175,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 |-------|----------------|--------|-----------|
 | 1. Project Scaffold | 2/2 | Complete | 2026-03-03 |
 | 2. Audio Loading and Key Detection | 2/2 | Complete | 2026-03-04 |
-| 3. Beat Tracking and Chord Detection | 0/3 | Not started | - |
+| 3. Beat Tracking and Chord Detection | 3/3 | Complete | 2026-03-04 |
 | 4. Structural Segmentation | 0/2 | Not started | - |
 | 5. Upload Handler and Async Processing | 0/2 | Not started | - |
 | 6. Lyrics Input, Chart Builder, and API Contract | 0/3 | Not started | - |
