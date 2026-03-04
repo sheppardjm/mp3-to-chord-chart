@@ -27,7 +27,7 @@
 ### Integration
 
 - [ ] **INTG-01**: Detected chord timestamps are aligned to user-provided lyric lines
-- [ ] **INTG-02**: Python backend (FastAPI) serves the API; frontend displays results via HTML/CSS/JS
+- [x] **INTG-02**: Python backend (FastAPI) serves the API; frontend displays results via HTML/CSS/JS
 
 ## v2 Requirements
 
@@ -75,7 +75,7 @@
 | DISP-02 | Phase 7 | Pending |
 | DISP-03 | Phase 8 | Pending |
 | INTG-01 | Phase 6 | Pending |
-| INTG-02 | Phase 1 | Pending |
+| INTG-02 | Phase 1 | Complete |
 
 **Coverage:**
 - v1 requirements: 12 total

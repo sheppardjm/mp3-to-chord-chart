@@ -12,7 +12,7 @@ dontCave is built in eight sequential phases, each delivering a distinct, verifi
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Project Scaffold** - FastAPI backend skeleton and Vite frontend skeleton, wired together and confirmed running
+- [x] **Phase 1: Project Scaffold** - FastAPI backend skeleton and Vite frontend skeleton, wired together and confirmed running
 - [ ] **Phase 2: Audio Loading and Key Detection** - MP3 loads correctly with memory constraints; detected key drives enharmonic naming
 - [ ] **Phase 3: Beat Tracking and Chord Detection** - Beat-synchronized, template-matched chord labels produced from audio
 - [ ] **Phase 4: Structural Segmentation** - Song sections (Verse, Chorus, Bridge) auto-detected from audio and labeled
@@ -35,8 +35,8 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans**: 2 plans
 
 Plans:
-- [ ] 01-01-PLAN.md -- Set up FastAPI backend with pyproject.toml, venv, dependencies, and health endpoint
-- [ ] 01-02-PLAN.md -- Scaffold Vite vanilla JS frontend, configure proxy to backend, verify full-stack communication
+- [x] 01-01-PLAN.md -- Set up FastAPI backend with pyproject.toml, venv, dependencies, and health endpoint
+- [x] 01-02-PLAN.md -- Scaffold Vite vanilla JS frontend, configure proxy to backend, verify full-stack communication
 
 ---
 
@@ -173,7 +173,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Project Scaffold | 0/2 | Not started | - |
+| 1. Project Scaffold | 2/2 | ✓ Complete | 2026-03-03 |
 | 2. Audio Loading and Key Detection | 0/2 | Not started | - |
 | 3. Beat Tracking and Chord Detection | 0/3 | Not started | - |
 | 4. Structural Segmentation | 0/2 | Not started | - |
