@@ -13,7 +13,7 @@ dontCave is built in eight sequential phases, each delivering a distinct, verifi
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Project Scaffold** - FastAPI backend skeleton and Vite frontend skeleton, wired together and confirmed running
-- [ ] **Phase 2: Audio Loading and Key Detection** - MP3 loads correctly with memory constraints; detected key drives enharmonic naming
+- [x] **Phase 2: Audio Loading and Key Detection** - MP3 loads correctly with memory constraints; detected key drives enharmonic naming
 - [ ] **Phase 3: Beat Tracking and Chord Detection** - Beat-synchronized, template-matched chord labels produced from audio
 - [ ] **Phase 4: Structural Segmentation** - Song sections (Verse, Chorus, Bridge) auto-detected from audio and labeled
 - [ ] **Phase 5: Upload Handler and Async Processing** - MP3 file upload with validation; pipeline runs off the request thread with progress feedback
@@ -52,8 +52,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 02-01-PLAN.md -- Install librosa into Python 3.14 venv and create audio loader module with constrained librosa.load() and HPSS separation
-- [ ] 02-02-PLAN.md -- Implement key detection with Krumhansl-Schmuckler algorithm and validate enharmonic naming against test audio
+- [x] 02-01-PLAN.md -- Install librosa into Python 3.14 venv and create audio loader module with constrained librosa.load() and HPSS separation
+- [x] 02-02-PLAN.md -- Implement key detection with Krumhansl-Schmuckler algorithm and validate enharmonic naming against test audio
 
 ---
 
@@ -174,7 +174,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Project Scaffold | 2/2 | Complete | 2026-03-03 |
-| 2. Audio Loading and Key Detection | 0/2 | Planned | - |
+| 2. Audio Loading and Key Detection | 2/2 | Complete | 2026-03-04 |
 | 3. Beat Tracking and Chord Detection | 0/3 | Not started | - |
 | 4. Structural Segmentation | 0/2 | Not started | - |
 | 5. Upload Handler and Async Processing | 0/2 | Not started | - |
