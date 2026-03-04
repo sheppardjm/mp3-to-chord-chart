@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-03-03)
 
 **Core value:** Accurately detect chord changes from an MP3 and align them to the right positions in user-provided lyrics, producing a readable chord chart.
-**Current focus:** Phase 5 complete — upload validation (413/415), threadpool async processing, and frontend upload form with loading state all wired end-to-end; ready for Phase 6
+**Current focus:** Phase 6 in progress — 06-01 (models) and 06-02 (chart builder + /analyze wiring) complete; 06-03 remaining
 
 ## Current Position
 
 Phase: 6 of 8 (Lyrics Input, Chart Builder, and API Contract) — In progress
-Plan: 1 of 3 in current phase (06-01 complete)
-Status: In progress — Pydantic v2 response models defined; chart_builder.py and /analyze response_model wiring remain
-Last activity: 2026-03-04 — Completed 06-01-PLAN.md (ChordAnnotation, LyricLine, Section, ChartData Pydantic v2 BaseModel classes)
+Plan: 2 of 3 in current phase (06-01 and 06-02 complete)
+Status: In progress — chart_builder.py created; /analyze now returns ChartData JSON with lyrics Form param; 06-03 remains
+Last activity: 2026-03-04 — Completed 06-02-PLAN.md (chart_builder.py, key detection in pipeline, /analyze endpoint wiring)
 
-Progress: [██████░░░░] 65% (13/20 plans)
+Progress: [██████░░░░] 70% (14/20 plans)
 
 ## Performance Metrics
 
@@ -67,6 +67,10 @@ Recent decisions affecting current work:
 - 04-02 D002: File size/MIME validation and async processing deferred to Phase 5 -- out of scope for pipeline integration
 - 05-01 D001: ALLOWED_MIME_TYPES = {"audio/mpeg", "audio/mp3"} — browsers send audio/mpeg; curl requires explicit type=audio/mpeg flag; application/octet-stream (curl default) correctly rejected
 - 05-01 D002: file.size guard uses "is not None" check — UploadFile.size is None when Content-Length header absent; guard is advisory when size known, skips gracefully otherwise
+- 06-02 D001: zip() truncation (not zip_longest) for mismatched section counts — shorter list wins, no crash, no padding with empty data
+- 06-02 D002: Last section end time = last_chord['time'] + 8.0 s — pipeline dict does not expose total audio duration; 8-second buffer is reasonable trailing estimate
+- 06-02 D003: build_chart() runs in-process after run_in_threadpool returns — fast pure Python, no second threadpool needed
+- 06-02 D004: Lyrics validated after pipeline completes — validate as late as possible to keep 422 on the fast path
 
 ### Pending Todos
 
@@ -81,6 +85,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-04T14:38:25Z
-Stopped at: Completed 06-01-PLAN.md — Pydantic v2 response models (ChordAnnotation, LyricLine, Section, ChartData) in backend/audio/models.py
+Last session: 2026-03-04T14:42:56Z
+Stopped at: Completed 06-02-PLAN.md — chart_builder.py created; detect_key wired into pipeline; /analyze returns ChartData JSON
 Resume file: None
