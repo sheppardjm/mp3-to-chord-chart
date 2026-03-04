@@ -2,20 +2,23 @@
 
 Endpoints:
     GET  /health   — health check
-    POST /analyze  — upload MP3, returns chord analysis with sections
+    POST /analyze  — upload MP3 + lyrics, returns ChartData JSON
 
 Validation:
     - Files larger than 50 MB are rejected with HTTP 413
     - Non-MP3 MIME types are rejected with HTTP 415
+    - Missing or empty lyrics are rejected with HTTP 422
 
 Async processing:
     - The synchronous audio pipeline runs in a threadpool via
       run_in_threadpool so the event loop is not blocked during analysis
+    - Chart building (build_chart) is fast pure Python and runs in-process
 """
 import os
 import tempfile
 
-from fastapi import FastAPI, File, UploadFile, HTTPException
+from fastapi import FastAPI, File, Form, UploadFile, HTTPException
+from pydantic import ValidationError
 from starlette.concurrency import run_in_threadpool
 
 from audio.loader import load_audio
@@ -24,7 +27,10 @@ from audio.chord_detection import (
     beat_track_grid,
     extract_beat_chroma,
 )
+from audio.key_detection import detect_key
+from audio.models import ChartData
 from audio.segmentation import segment_song, build_sections
+from audio.chart_builder import build as build_chart
 
 app = FastAPI()
 
@@ -50,10 +56,13 @@ def _run_pipeline(tmp_path: str) -> dict:
         tmp_path: Absolute path to the temporary MP3 file on disk.
 
     Returns:
-        dict with keys: tempo_bpm, chord_segments, sections, n_beats, n_segments
+        dict with keys: key, tempo_bpm, chord_segments, sections, n_beats, n_segments
     """
     # Phase 2: Load audio
     audio = load_audio(tmp_path)
+
+    # Phase 2: Key detection
+    key = detect_key(audio['y_harmonic'], audio['sr'])
 
     # Phase 3: Chord detection
     chord_result = detect_chords_pipeline(audio)
@@ -75,6 +84,7 @@ def _run_pipeline(tmp_path: str) -> dict:
     )
 
     return {
+        'key': key,
         'tempo_bpm': chord_result['tempo_bpm'],
         'chord_segments': chord_result['chord_segments'],
         'sections': sections,
@@ -92,25 +102,28 @@ async def health():
     return {"status": "ok"}
 
 
-@app.post("/analyze")
-async def analyze(file: UploadFile = File(...)):
-    """Analyze an uploaded MP3 file: validate, detect chords, segment sections.
+@app.post("/analyze", response_model=ChartData)
+async def analyze(file: UploadFile = File(...), lyrics: str = Form(None)):
+    """Analyze an uploaded MP3 file with lyrics: validate, detect chords, build chart.
 
     Validates file size (<= 50 MB) and MIME type (audio/mpeg or audio/mp3)
-    before any I/O. Writes to a temp file, then runs the synchronous audio
-    pipeline in a threadpool so the server remains responsive.
+    before any I/O. Writes to a temp file, runs the synchronous audio pipeline
+    in a threadpool, then aligns detected chords to the provided lyrics and
+    returns a structured ChartData response.
+
+    Args:
+        file:   Uploaded MP3 file (multipart/form-data).
+        lyrics: Song lyrics as plain text (multipart/form-data). Sections
+                separated by blank lines; lines within each section separated
+                by newlines.
 
     Returns:
-        JSON with keys:
-            - tempo_bpm: float
-            - chord_segments: list[dict] — collapsed chord timeline
-            - sections: list[dict] — labeled sections with chord sequences
-            - n_beats: int
-            - n_segments: int
+        ChartData JSON with keys: key, bpm, unique_chords, sections.
 
     Raises:
         413: File exceeds 50 MB limit
         415: File is not an MP3 (audio/mpeg)
+        422: Lyrics missing/empty or pipeline output malformed
         500: Internal pipeline error
     """
     # ------------------------------------------------------------------
@@ -146,7 +159,15 @@ async def analyze(file: UploadFile = File(...)):
             tmp_path = tmp.name
 
         result = await run_in_threadpool(_run_pipeline, tmp_path)
-        return result
+
+        if not lyrics or not lyrics.strip():
+            raise HTTPException(status_code=422, detail='Lyrics are required')
+
+        try:
+            chart = build_chart(result, lyrics)
+            return chart
+        except (ValidationError, KeyError, ValueError) as e:
+            raise HTTPException(status_code=422, detail=str(e))
 
     except HTTPException:
         raise
