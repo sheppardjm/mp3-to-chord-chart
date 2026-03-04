@@ -16,7 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 2: Audio Loading and Key Detection** - MP3 loads correctly with memory constraints; detected key drives enharmonic naming
 - [x] **Phase 3: Beat Tracking and Chord Detection** - Beat-synchronized, template-matched chord labels produced from audio
 - [x] **Phase 4: Structural Segmentation** - Song sections (Verse, Chorus, Bridge) auto-detected from audio and labeled
-- [ ] **Phase 5: Upload Handler and Async Processing** - MP3 file upload with validation; pipeline runs off the request thread with progress feedback
+- [x] **Phase 5: Upload Handler and Async Processing** - MP3 file upload with validation; pipeline runs off the request thread with progress feedback
 - [ ] **Phase 6: Lyrics Input, Chart Builder, and API Contract** - User pastes lyrics; backend aligns chord timeline to lyric lines and returns ChartData JSON
 - [ ] **Phase 7: Chord Chart Display** - Frontend renders chords above lyrics in Ultimate Guitar format, organized by section
 - [ ] **Phase 8: Chord Fingering Diagrams** - SVG fingering diagrams rendered for every unique chord in the song
@@ -106,8 +106,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 05-01-PLAN.md -- Add file validation (size + MIME) and threadpool offloading to /analyze endpoint
-- [ ] 05-02-PLAN.md -- Replace frontend scaffold with upload form, loading state, and result display
+- [x] 05-01-PLAN.md -- Add file validation (size + MIME) and threadpool offloading to /analyze endpoint
+- [x] 05-02-PLAN.md -- Replace frontend scaffold with upload form, loading state, and result display
 
 ---
 
@@ -177,7 +177,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | 2. Audio Loading and Key Detection | 2/2 | Complete | 2026-03-04 |
 | 3. Beat Tracking and Chord Detection | 3/3 | Complete | 2026-03-04 |
 | 4. Structural Segmentation | 2/2 | Complete | 2026-03-04 |
-| 5. Upload Handler and Async Processing | 0/2 | Not started | - |
+| 5. Upload Handler and Async Processing | 2/2 | Complete | 2026-03-04 |
 | 6. Lyrics Input, Chart Builder, and API Contract | 0/3 | Not started | - |
 | 7. Chord Chart Display | 0/3 | Not started | - |
 | 8. Chord Fingering Diagrams | 0/3 | Not started | - |

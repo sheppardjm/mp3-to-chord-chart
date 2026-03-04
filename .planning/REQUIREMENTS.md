@@ -14,9 +14,9 @@
 
 ### Input
 
-- [ ] **INPUT-01**: User can upload an MP3 file via the web interface
+- [x] **INPUT-01**: User can upload an MP3 file via the web interface
 - [ ] **INPUT-02**: User can paste song lyrics into a text area
-- [ ] **INPUT-03**: UI shows processing progress/feedback while audio is analyzed (10-60s)
+- [x] **INPUT-03**: UI shows processing progress/feedback while audio is analyzed (10-60s)
 
 ### Display
 
@@ -68,9 +68,9 @@
 | AUDIO-02 | Phase 3 | Complete |
 | AUDIO-03 | Phase 4 | Complete |
 | AUDIO-04 | Phase 2 | Complete |
-| INPUT-01 | Phase 5 | Pending |
+| INPUT-01 | Phase 5 | Complete |
 | INPUT-02 | Phase 6 | Pending |
-| INPUT-03 | Phase 5 | Pending |
+| INPUT-03 | Phase 5 | Complete |
 | DISP-01 | Phase 7 | Pending |
 | DISP-02 | Phase 7 | Pending |
 | DISP-03 | Phase 8 | Pending |
