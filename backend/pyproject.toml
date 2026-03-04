@@ -6,4 +6,11 @@ requires-python = ">=3.10"
 dependencies = [
     "fastapi==0.135.1",
     "uvicorn==0.41.0",
+    "librosa==0.11.0",
 ]
+
+[tool.notes]
+# numba and llvmlite are installed as stubs in the venv (no binary wheels for
+# Python 3.14 x86_64 on macOS at time of setup). All librosa functionality
+# works correctly; JIT compilation is disabled (no performance impact for
+# this use case — audio is loaded and processed once per request).
