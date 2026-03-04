@@ -49,11 +49,11 @@ Plans:
   2. `librosa.load()` is called with `sr=22050, mono=True, duration=300` — confirmed in code, not left to defaults
   3. The detected key for a known test song (e.g., a G major song) is returned as the correct root and mode
   4. Enharmonic naming convention derived from key is applied: flat-key songs produce Bb/Eb/Ab, not A#/D#/G#
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 02-01: Implement audio loader module with constrained librosa.load() and memory cleanup
-- [ ] 02-02: Implement key detection stage using librosa key_to_notes and validate against 3-5 known songs
+- [ ] 02-01-PLAN.md -- Install librosa into Python 3.14 venv and create audio loader module with constrained librosa.load() and HPSS separation
+- [ ] 02-02-PLAN.md -- Implement key detection with Krumhansl-Schmuckler algorithm and validate enharmonic naming against test audio
 
 ---
 
@@ -169,12 +169,12 @@ Plans:
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Project Scaffold | 2/2 | ✓ Complete | 2026-03-03 |
-| 2. Audio Loading and Key Detection | 0/2 | Not started | - |
+| 1. Project Scaffold | 2/2 | Complete | 2026-03-03 |
+| 2. Audio Loading and Key Detection | 0/2 | Planned | - |
 | 3. Beat Tracking and Chord Detection | 0/3 | Not started | - |
 | 4. Structural Segmentation | 0/2 | Not started | - |
 | 5. Upload Handler and Async Processing | 0/2 | Not started | - |
