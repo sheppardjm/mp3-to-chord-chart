@@ -1,4 +1,5 @@
 import './style.css'
+import { ChordProParser, HtmlDivFormatter } from 'chordsheetjs'
 
 document.querySelector('#app').innerHTML = `
   <h1>dontCave</h1>
@@ -11,6 +12,7 @@ document.querySelector('#app').innerHTML = `
   </form>
   <p id="status"></p>
   <pre id="result"></pre>
+  <div id="chord-chart"></div>
 `
 
 const form = document.querySelector('#upload-form')
@@ -57,3 +59,31 @@ form.addEventListener('submit', async (e) => {
     submitBtn.disabled = false
   }
 })
+
+// --- Temporary ChordPro smoke test (remove in 07-02) ---
+const TEST_CHORDPRO = `{title: Smoke Test}
+{key: G}
+{start_of_verse: Verse 1}
+[G]Let it [D]be, let it [Em]be
+[C]Whis-per [G]words of wis-dom
+{end_of_verse}
+{start_of_chorus: Chorus}
+[Am]Let it [F]be
+{end_of_chorus}`
+
+const parser = new ChordProParser()
+const song = parser.parse(TEST_CHORDPRO)
+const formatter = new HtmlDivFormatter()
+
+const chartEl = document.querySelector('#chord-chart')
+
+// Inject scoped CSS
+if (!document.getElementById('chordsheet-css')) {
+  const styleEl = document.createElement('style')
+  styleEl.id = 'chordsheet-css'
+  styleEl.textContent = formatter.cssString('#chord-chart')
+  document.head.appendChild(styleEl)
+}
+
+chartEl.innerHTML = formatter.format(song)
+// --- End smoke test ---
