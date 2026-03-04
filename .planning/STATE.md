@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-03-03)
 
 **Core value:** Accurately detect chord changes from an MP3 and align them to the right positions in user-provided lyrics, producing a readable chord chart.
-**Current focus:** Phase 7 in progress — chordsheetjs installed and smoke tested; ready for 07-02 (ChartData-to-Song translation)
+**Current focus:** Phase 7 in progress — 07-02 complete; renderChart.js wired to /analyze response; ready for 07-03 (key/tempo header)
 
 ## Current Position
 
 Phase: 7 of 8 (Chord Chart Display) — In progress
-Plan: 1 of 3 in current phase (07-01 complete)
-Status: In progress — chordsheetjs@14.0.0 integrated with Vite 7, ChordPro smoke test renders chord-above-lyric HTML
-Last activity: 2026-03-04 — Completed 07-01-PLAN.md (chordsheetjs install and smoke test)
+Plan: 2 of 3 in current phase (07-01, 07-02 complete)
+Status: In progress — renderChart.js translates ChartData to chord-above-lyric HTML; /analyze response now renders chord chart instead of JSON
+Last activity: 2026-03-04 — Completed 07-02-PLAN.md (renderChart.js + main.js wiring)
 
-Progress: [████████░░] 80% (16/20 plans)
+Progress: [████████░░] 85% (17/20 plans)
 
 ## Performance Metrics
 
@@ -74,6 +74,9 @@ Recent decisions affecting current work:
 - 06-03: No new decisions — two-line frontend change (textarea + FormData append) executed exactly as planned; end-to-end cycle user-verified
 - 07-01 D001: HtmlDivFormatter.cssString('#chord-chart') used for scoped CSS injection — prevents style leakage onto form/result elements; injected once on page load via guard pattern
 - 07-01 D002: Smoke test additive (does not touch form/submit handler) and marked for removal in 07-02
+- 07-02 D001: new Song() called with no constructor args — key/tempo header deferred to Plan 07-03
+- 07-02 D002: sectionTypeFor() uses substring matching; all Section A/B/C labels fall through to 'verse' (correct for generic backend labels)
+- 07-02 D003: buildChordLyricsPairs() clamps with Math.min(result, text.length) — last chord gets remainder via tail assignment after loop
 
 ### Pending Todos
 
@@ -88,6 +91,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-04T15:46:38Z
-Stopped at: Completed 07-01-PLAN.md — chordsheetjs@14.0.0 installed and validated; ChordPro smoke test rendering chord-above-lyric HTML in browser
+Last session: 2026-03-04T15:50:54Z
+Stopped at: Completed 07-02-PLAN.md — renderChart.js created with ChartData-to-Song translation; main.js wired to call renderChart() on /analyze response; smoke test removed
 Resume file: None
