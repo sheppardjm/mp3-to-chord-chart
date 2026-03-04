@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-03-03)
 
 **Core value:** Accurately detect chord changes from an MP3 and align them to the right positions in user-provided lyrics, producing a readable chord chart.
-**Current focus:** Phase 6 complete — all 3 plans done; ready for Phase 7 (chord chart display)
+**Current focus:** Phase 7 in progress — chordsheetjs installed and smoke tested; ready for 07-02 (ChartData-to-Song translation)
 
 ## Current Position
 
-Phase: 6 of 8 (Lyrics Input, Chart Builder, and API Contract) — Complete
-Plan: 3 of 3 in current phase (06-01, 06-02, 06-03 all complete)
-Status: Phase 6 complete — lyrics textarea frontend, chart_builder.py, /analyze ChartData JSON, end-to-end verified by user
-Last activity: 2026-03-04 — Completed 06-03-PLAN.md (lyrics textarea + full end-to-end human verification)
+Phase: 7 of 8 (Chord Chart Display) — In progress
+Plan: 1 of 3 in current phase (07-01 complete)
+Status: In progress — chordsheetjs@14.0.0 integrated with Vite 7, ChordPro smoke test renders chord-above-lyric HTML
+Last activity: 2026-03-04 — Completed 07-01-PLAN.md (chordsheetjs install and smoke test)
 
-Progress: [███████░░░] 75% (15/20 plans)
+Progress: [████████░░] 80% (16/20 plans)
 
 ## Performance Metrics
 
@@ -72,6 +72,8 @@ Recent decisions affecting current work:
 - 06-02 D003: build_chart() runs in-process after run_in_threadpool returns — fast pure Python, no second threadpool needed
 - 06-02 D004: Lyrics validated after pipeline completes — validate as late as possible to keep 422 on the fast path
 - 06-03: No new decisions — two-line frontend change (textarea + FormData append) executed exactly as planned; end-to-end cycle user-verified
+- 07-01 D001: HtmlDivFormatter.cssString('#chord-chart') used for scoped CSS injection — prevents style leakage onto form/result elements; injected once on page load via guard pattern
+- 07-01 D002: Smoke test additive (does not touch form/submit handler) and marked for removal in 07-02
 
 ### Pending Todos
 
@@ -86,6 +88,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-04T15:00:00Z
-Stopped at: Completed 06-03-PLAN.md — lyrics textarea added to frontend; full Phase 6 end-to-end cycle user-verified; Phase 6 complete
+Last session: 2026-03-04T15:46:38Z
+Stopped at: Completed 07-01-PLAN.md — chordsheetjs@14.0.0 installed and validated; ChordPro smoke test rendering chord-above-lyric HTML in browser
 Resume file: None
