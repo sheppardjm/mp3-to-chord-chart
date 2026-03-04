@@ -10,28 +10,28 @@ See: .planning/PROJECT.md (updated 2026-03-03)
 ## Current Position
 
 Phase: 1 of 8 (Project Scaffold)
-Plan: 0 of 2 in current phase
-Status: Ready to plan
-Last activity: 2026-03-03 — Roadmap created; all 12 v1 requirements mapped to 8 phases
+Plan: 1 of 2 in current phase
+Status: In progress
+Last activity: 2026-03-03 — Completed 01-01-PLAN.md (backend scaffold)
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [█░░░░░░░░░] 6% (1/16 estimated plans)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 0
-- Average duration: —
-- Total execution time: 0.0 hours
+- Total plans completed: 1
+- Average duration: ~1.5 minutes
+- Total execution time: 0.02 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| - | - | - | - |
+| 01-project-scaffold | 1 | ~1.5 min | ~1.5 min |
 
 **Recent Trend:**
-- Last 5 plans: —
-- Trend: —
+- Last 5 plans: 01-01 (1.5 min)
+- Trend: Baseline established
 
 *Updated after each plan completion*
 
@@ -45,6 +45,7 @@ Recent decisions affecting current work:
 - Roadmap: Pipeline-first order mandated — audio pipeline must produce correct chord data before any UI work begins
 - Roadmap: Beat-synchronized template matching with Viterbi smoothing required (raw chroma argmax produces unusable output)
 - Roadmap: FastAPI threadpool (run_in_executor) required for async audio processing — synchronous handling hangs the server
+- 01-01 D001: Install fastapi and uvicorn as separate packages (not fastapi[standard]) — fastapi[standard] fails on Python 3.14 due to transitive binary build failures
 
 ### Pending Todos
 
@@ -59,5 +60,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-03
-Stopped at: Roadmap created; STATE.md initialized; ready to begin Phase 1 planning
+Stopped at: Completed 01-01-PLAN.md — backend scaffold with FastAPI health endpoint verified
 Resume file: None
