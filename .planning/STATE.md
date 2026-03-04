@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-03-03)
 
 **Core value:** Accurately detect chord changes from an MP3 and align them to the right positions in user-provided lyrics, producing a readable chord chart.
-**Current focus:** Phase 6 in progress — 06-01 (models) and 06-02 (chart builder + /analyze wiring) complete; 06-03 remaining
+**Current focus:** Phase 6 complete — all 3 plans done; ready for Phase 7 (chord chart display)
 
 ## Current Position
 
-Phase: 6 of 8 (Lyrics Input, Chart Builder, and API Contract) — In progress
-Plan: 2 of 3 in current phase (06-01 and 06-02 complete)
-Status: In progress — chart_builder.py created; /analyze now returns ChartData JSON with lyrics Form param; 06-03 remains
-Last activity: 2026-03-04 — Completed 06-02-PLAN.md (chart_builder.py, key detection in pipeline, /analyze endpoint wiring)
+Phase: 6 of 8 (Lyrics Input, Chart Builder, and API Contract) — Complete
+Plan: 3 of 3 in current phase (06-01, 06-02, 06-03 all complete)
+Status: Phase 6 complete — lyrics textarea frontend, chart_builder.py, /analyze ChartData JSON, end-to-end verified by user
+Last activity: 2026-03-04 — Completed 06-03-PLAN.md (lyrics textarea + full end-to-end human verification)
 
-Progress: [██████░░░░] 70% (14/20 plans)
+Progress: [███████░░░] 75% (15/20 plans)
 
 ## Performance Metrics
 
@@ -71,6 +71,7 @@ Recent decisions affecting current work:
 - 06-02 D002: Last section end time = last_chord['time'] + 8.0 s — pipeline dict does not expose total audio duration; 8-second buffer is reasonable trailing estimate
 - 06-02 D003: build_chart() runs in-process after run_in_threadpool returns — fast pure Python, no second threadpool needed
 - 06-02 D004: Lyrics validated after pipeline completes — validate as late as possible to keep 422 on the fast path
+- 06-03: No new decisions — two-line frontend change (textarea + FormData append) executed exactly as planned; end-to-end cycle user-verified
 
 ### Pending Todos
 
@@ -85,6 +86,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-04T14:42:56Z
-Stopped at: Completed 06-02-PLAN.md — chart_builder.py created; detect_key wired into pipeline; /analyze returns ChartData JSON
+Last session: 2026-03-04T15:00:00Z
+Stopped at: Completed 06-03-PLAN.md — lyrics textarea added to frontend; full Phase 6 end-to-end cycle user-verified; Phase 6 complete
 Resume file: None
