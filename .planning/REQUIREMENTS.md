@@ -15,7 +15,7 @@
 ### Input
 
 - [x] **INPUT-01**: User can upload an MP3 file via the web interface
-- [ ] **INPUT-02**: User can paste song lyrics into a text area
+- [x] **INPUT-02**: User can paste song lyrics into a text area
 - [x] **INPUT-03**: UI shows processing progress/feedback while audio is analyzed (10-60s)
 
 ### Display
@@ -26,7 +26,7 @@
 
 ### Integration
 
-- [ ] **INTG-01**: Detected chord timestamps are aligned to user-provided lyric lines
+- [x] **INTG-01**: Detected chord timestamps are aligned to user-provided lyric lines
 - [x] **INTG-02**: Python backend (FastAPI) serves the API; frontend displays results via HTML/CSS/JS
 
 ## v2 Requirements
@@ -69,12 +69,12 @@
 | AUDIO-03 | Phase 4 | Complete |
 | AUDIO-04 | Phase 2 | Complete |
 | INPUT-01 | Phase 5 | Complete |
-| INPUT-02 | Phase 6 | Pending |
+| INPUT-02 | Phase 6 | Complete |
 | INPUT-03 | Phase 5 | Complete |
 | DISP-01 | Phase 7 | Pending |
 | DISP-02 | Phase 7 | Pending |
 | DISP-03 | Phase 8 | Pending |
-| INTG-01 | Phase 6 | Pending |
+| INTG-01 | Phase 6 | Complete |
 | INTG-02 | Phase 1 | Complete |
 
 **Coverage:**

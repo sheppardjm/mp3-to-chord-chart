@@ -17,7 +17,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 3: Beat Tracking and Chord Detection** - Beat-synchronized, template-matched chord labels produced from audio
 - [x] **Phase 4: Structural Segmentation** - Song sections (Verse, Chorus, Bridge) auto-detected from audio and labeled
 - [x] **Phase 5: Upload Handler and Async Processing** - MP3 file upload with validation; pipeline runs off the request thread with progress feedback
-- [ ] **Phase 6: Lyrics Input, Chart Builder, and API Contract** - User pastes lyrics; backend aligns chord timeline to lyric lines and returns ChartData JSON
+- [x] **Phase 6: Lyrics Input, Chart Builder, and API Contract** - User pastes lyrics; backend aligns chord timeline to lyric lines and returns ChartData JSON
 - [ ] **Phase 7: Chord Chart Display** - Frontend renders chords above lyrics in Ultimate Guitar format, organized by section
 - [ ] **Phase 8: Chord Fingering Diagrams** - SVG fingering diagrams rendered for every unique chord in the song
 
@@ -121,12 +121,12 @@ Plans:
   3. Chords are distributed across lyric lines proportionally — no section is left with all chords on one line while other lines have none
   4. The unique chord list in the response contains only the distinct chord names detected across the entire song (no duplicates)
   5. The Pydantic response model validates the ChartData structure and rejects malformed pipeline output with a 422 before it reaches the frontend
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 06-01: Define Pydantic models (ChartData, Section, LyricLine, ChordAnnotation) as the backend-frontend API contract
-- [ ] 06-02: Implement chart_builder.build() with line-count heuristic alignment of chord timestamps to lyric lines by section
-- [ ] 06-03: Add lyrics textarea to frontend form and wire full multipart POST (MP3 + lyrics) to /analyze endpoint
+- [x] 06-01-PLAN.md -- Define Pydantic v2 models (ChartData, Section, LyricLine, ChordAnnotation) as the backend-frontend API contract
+- [x] 06-02-PLAN.md -- Create chart_builder module with proportional alignment and wire key detection + chart building into main.py
+- [x] 06-03-PLAN.md -- Add lyrics textarea to frontend form, wire FormData POST, and verify full end-to-end flow
 
 ---
 
@@ -178,6 +178,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | 3. Beat Tracking and Chord Detection | 3/3 | Complete | 2026-03-04 |
 | 4. Structural Segmentation | 2/2 | Complete | 2026-03-04 |
 | 5. Upload Handler and Async Processing | 2/2 | Complete | 2026-03-04 |
-| 6. Lyrics Input, Chart Builder, and API Contract | 0/3 | Not started | - |
+| 6. Lyrics Input, Chart Builder, and API Contract | 3/3 | Complete | 2026-03-04 |
 | 7. Chord Chart Display | 0/3 | Not started | - |
 | 8. Chord Fingering Diagrams | 0/3 | Not started | - |
